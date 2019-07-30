@@ -8,6 +8,7 @@ CREATE TABLE User_TB
     Name_User varchar(40) NOT NULL,
     Email varchar(200) unique,
     Pw_User varchar(400) NOT NULL,
+    salt varchar(400) NOT NULL,
 	Phone_User Varchar(20) NOT NULL,
     Address_User Varchar(300),
     Create_at datetime default now(),
@@ -34,10 +35,10 @@ Create TABLE Store_TB
 	Idx_User Int not null,
     Idx_Food varchar(20) not null,
     Dscr_Food varchar(1000),
-    Sales varchar(20) default 'not',
+    Sales varchar(20) default 'N',
     Minimum_Order INT,
     Address_Store  varchar(300),
-    No_Image varchar(20) default 'not',
+    ImageYn varchar(20) default 'N',
     foreign key(Idx_User) references User_TB (Idx_User),
     foreign key(Idx_Food) references Type_Food_TB (Idx_Food)
 );
@@ -88,18 +89,64 @@ Create Table Menu_Image_TB
 
 Create TABLE Basket_TB
 (
+	Idx_Basket INT primary key auto_increment,
 	Idx_User INT,
     Idx_Store INT,
+    CompleteYn varchar(20) default 'N',
+    Create_at datetime default now(),
+    foreign key(Idx_User) references User_TB (Idx_User),
+    foreign key(Idx_Store) references Store_TB (Idx_Store)
+);
+
+Create Table Basket_Item_TB
+(
+	Idx_Basket INT,
     Idx_Menu INT,
+    Quantity INT,
     Basket_Price INT,
+    foreign key(Idx_Basket) references Basket_TB(Idx_Basket),
+    foreign key(Idx_Menu) references Menu_TB(Idx_Menu)
+);
+
+Create TABLE Order_TB
+(
+	Idx_Order Int primary key auto_increment,
+	Idx_User INT,
+    Idx_Store INT,
+    Approval varchar(30),
+    Address_User varchar(300),
     Create_at datetime default now(),
     foreign key(Idx_User) references User_TB (Idx_User),
     foreign key(Idx_Store) references Store_TB (Idx_Store),
     foreign key(Idx_Menu) references Menu_TB (Idx_Menu)
 );
 
--- Create TABLE Order_TB
--- (
--- 	Idx_Order INT primary key auto_increment,
---     
--- )
+Create TABLE Order_Item_TB
+(
+	Idx_Order INT,
+	Idx_Menu INT,
+    Quantity INT,
+    Price_Order Int,
+    foreign key(Idx_Basket) references Basket_TB(Idx_Basket),
+    foreign key(Idx_Menu) references Menu_TB(Idx_Menu),
+    foreign key(Idx_Order) references Order_TB(Idx_Order)
+);
+
+Create TABLE Review_TB
+(
+	Idx_Review INT primary key auto_increment,
+    Idx_Order INT, 
+	Idx_user INT,
+    Idx_Store INT,
+    Content_Review varchar(500),
+    foreign key(Idx_Order) references Order_TB(Idx_Order),
+    foreign key(Idx_User) references User_TB (Idx_User),
+    foreign key(Idx_Store) references Store_TB (Idx_Store)
+);
+
+Create TABLE Answer_TB
+(
+	Idx_Review INT,
+    Content_Answer varchar(500),
+    foreign key(Idx_Review) references Review_TB(Idx_Review)
+);
