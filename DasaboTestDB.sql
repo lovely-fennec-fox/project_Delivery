@@ -13,7 +13,7 @@ CREATE TABLE User_TB
     Address_User Varchar(300),
     Create_at datetime default now(),
     Update_at datetime,
-    Role varchar(20) default 'Cunsumer' 
+    Role varchar(20) default 'Consumer' 
 );
 
 Create TABLE Point_TB
@@ -34,7 +34,7 @@ Create TABLE Store_TB
 	Idx_Store INT primary key auto_increment,
 	Idx_User Int not null,
     Idx_Food varchar(20) not null,
-    Dscr_Food varchar(1000),
+    Dscr_Store varchar(1000),
     Sales varchar(20) default 'N',
     Minimum_Order INT,
     Address_Store  varchar(300),
